@@ -26,7 +26,7 @@ const Hero = () => {
       rightText: 'SUMMER 25/26'
     },
     {
-      src: '/vid4.mp4',
+      src: '/vid6.mp4',
       leftText: 'LUXURY',
       centerText: 'STYLE',
       rightText: 'AUTUMN 25/26'
