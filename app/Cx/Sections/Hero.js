@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { ptSerif } from '../Font/font';
+import Link from 'next/link';
 
 const Hero = () => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
@@ -131,45 +132,47 @@ const Hero = () => {
       ref={sectionRef}
       className="relative w-full h-screen flex items-center justify-center overflow-hidden"
     >
-      {/* Video Backgrounds */}
-      {videos.map((video, index) => {
-        const isCurrent = index === currentVideoIndex;
-        const isNext = index === (currentVideoIndex + 1) % videos.length;
-        const isPrev = index === (currentVideoIndex - 1 + videos.length) % videos.length;
-        
-        let transformClass = '';
-        if (isCurrent) {
-          transformClass = 'translate-y-0';
-        } else if (isNext) {
-          transformClass = 'translate-y-full';
-        } else {
-          transformClass = '-translate-y-full';
-        }
-        
-        return (
-          <div
-            key={index}
-            className={`absolute inset-0 w-full h-full z-0 transition-transform duration-700 ease-in-out ${transformClass}`}
-          >
-            <video
-              ref={(el) => (videoRefs.current[index] = el)}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
+      {/* Video Backgrounds - Clickable Link */}
+      <Link href="/new-arrival" className="absolute inset-0 z-0 cursor-pointer">
+        {videos.map((video, index) => {
+          const isCurrent = index === currentVideoIndex;
+          const isNext = index === (currentVideoIndex + 1) % videos.length;
+          const isPrev = index === (currentVideoIndex - 1 + videos.length) % videos.length;
+          
+          let transformClass = '';
+          if (isCurrent) {
+            transformClass = 'translate-y-0';
+          } else if (isNext) {
+            transformClass = 'translate-y-full';
+          } else {
+            transformClass = '-translate-y-full';
+          }
+          
+          return (
+            <div
+              key={index}
+              className={`absolute inset-0 w-full h-full transition-transform duration-700 ease-in-out ${transformClass}`}
             >
-              <source src={video.src} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            {/* Dark overlay for better text readability */}
-            <div className="absolute inset-0 bg-black/30"></div>
-          </div>
-        );
-      })}
+              <video
+                ref={(el) => (videoRefs.current[index] = el)}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+              >
+                <source src={video.src} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+              {/* Dark overlay for better text readability */}
+              <div className="absolute inset-0 bg-black/30"></div>
+            </div>
+          );
+        })}
+      </Link>
 
-      {/* Content Overlay */}
-      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
+      {/* Content Overlay - Clickable Link */}
+      <Link href="/new-arrival" className="relative z-10 text-center px-4 sm:px-6 lg:px-8 block cursor-pointer">
         {/* Text Overlays */}
         <div className="flex flex-col items-center space-y-8">
           {/* Left Text */}
@@ -202,12 +205,16 @@ const Hero = () => {
             {currentVideo.rightText}
           </div>
         </div>
-      </div>
+      </Link>
 
       {/* Navigation Arrows - Positioned at screen edges */}
       <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-20">
         <button
-          onClick={() => changeVideo('prev')}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            changeVideo('prev');
+          }}
           className="text-white hover:text-gray-300 transition-colors duration-200 p-4"
           aria-label="Previous"
         >
@@ -227,7 +234,11 @@ const Hero = () => {
 
       <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-20">
         <button
-          onClick={() => changeVideo('next')}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            changeVideo('next');
+          }}
           className="text-white hover:text-gray-300 transition-colors duration-200 p-4"
           aria-label="Next"
         >
