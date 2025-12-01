@@ -76,6 +76,21 @@ const Hero = () => {
         setTimeout(() => {
           setIsTransitioning(false);
         }, 700);
+
+        scrollTimeout = setTimeout(() => {
+          isScrolling = false;
+        }, 1000);
+      }
+      // Handle scroll up - previous video
+      else if (e.deltaY < 0) {
+        isScrolling = true;
+        if (isTransitioning) return;
+        
+        setIsTransitioning(true);
+        setCurrentVideoIndex((prev) => (prev - 1 + videos.length) % videos.length);
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 700);
         
         scrollTimeout = setTimeout(() => {
           isScrolling = false;
