@@ -57,7 +57,7 @@ export default function Navbar() {
               data-aos="fade"
               className={`${ptSerif.className} text-2xl sm:text-3xl font-bold text-white`}
             >
-              Abaya Web.
+              Abaya.
             </h1>
           </div>
 
