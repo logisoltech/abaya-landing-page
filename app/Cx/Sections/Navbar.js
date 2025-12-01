@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { ptSerif } from '../Font/font';
+import Link from 'next/link';
 
 export default function Navbar() {
   const links = ['• New Arrivals', 'Shop Summer Collection', 'Shop Winter Collection', 'Shop All', 'About Us', 'Contact Us'];
@@ -130,9 +131,9 @@ export default function Navbar() {
           {/* Navigation Links */}
           <nav className="flex flex-col space-y-2">
             {links.map((link, index) => (
-              <a
+              <Link
                 key={index}
-                href={`#${link}`}
+                href={`/new-arrival`}
                 onClick={() => setIsSidebarOpen(false)}
                 data-aos="fade-right"
                 data-aos-delay={index * 80}
@@ -140,7 +141,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10">{link}</span>
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-white transition-all duration-300 group-hover:w-full"></span>
-              </a>
+              </Link>
             ))}
           </nav>
         </div>
@@ -159,15 +160,15 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-6 sm:gap-8 py-4 overflow-x-auto hide-scrollbar">
             {links.map((link, index) => (
-              <a
+              <Link
                 key={index}
-                href={`#${link}`}
+                href={`/new-arrival`}
                 data-aos="fade-up"
                 data-aos-delay={index * 50}
                 className="text-white hover:text-gray-300 transition-colors duration-300 whitespace-nowrap font-medium text-sm uppercase tracking-wide"
               >
                 {link}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
