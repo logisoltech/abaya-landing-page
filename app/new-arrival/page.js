@@ -9,6 +9,7 @@ export default function NewArrival() {
   const [gridView, setGridView] = useState('2x2');
   const [sortOpen, setSortOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const sortRef = useRef(null);
 
   // Handle scroll to change navbar style
@@ -94,10 +95,10 @@ export default function NewArrival() {
         <nav className={`${ptSerif.className} fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
         }`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex justify-between items-center">
             {/* Left Side - Brand Logo */}
             <div className="flex items-center">
-              <Link href="/" className={`${ptSerif.className} text-2xl sm:text-3xl font-bold transition-colors duration-300 ${
+              <Link href="/" className={`${ptSerif.className} text-xl sm:text-2xl lg:text-3xl font-bold transition-colors duration-300 ${
                 isScrolled ? 'text-black' : 'text-white'
               }`}>
                 Abaya.
@@ -105,7 +106,7 @@ export default function NewArrival() {
             </div>
 
             {/* Right Icons */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {/* Search Icon */}
               <button 
                 className={`transition-colors duration-200 p-2 ${
@@ -189,8 +190,42 @@ export default function NewArrival() {
       <div className="bg-[#F5F5DC] min-h-screen">
         {/* Header Section */}
         <div className="sticky top-0 z-40 bg-[#F5F5DC] border-b border-gray-300">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex items-center justify-between">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+            {/* Mobile Layout */}
+            <div className="flex md:hidden items-center justify-between mb-2">
+              <button
+                onClick={() => setFiltersOpen(!filtersOpen)}
+                className="flex items-center gap-2 text-gray-900 font-medium text-sm"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                Filters
+              </button>
+              <div className="text-gray-900 font-medium text-sm">6 PRODUCTS</div>
+              <div className="relative" ref={sortRef}>
+                <button
+                  onClick={() => setSortOpen(!sortOpen)}
+                  className="flex items-center gap-1 text-gray-900 font-medium text-sm"
+                >
+                  Sort
+                  <svg className={`w-4 h-4 transition-transform ${sortOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {sortOpen && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg z-50 border border-gray-200">
+                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Price: Low to High</button>
+                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Price: High to Low</button>
+                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Newest First</button>
+                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Name: A-Z</button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden md:flex items-center justify-between">
               {/* Left - Grid View Icons and Hamburger */}
               <div className="flex items-center gap-4">
                 <button
@@ -248,14 +283,14 @@ export default function NewArrival() {
         </div>
 
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex gap-8">
-            {/* Left Sidebar - Filters */}
-            <aside className="w-64 shrink-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+          <div className="flex gap-4 lg:gap-8">
+            {/* Left Sidebar - Filters (Desktop) */}
+            <aside className={`hidden lg:block w-64 shrink-0`}>
               <div className="space-y-6">
                 {/* AVAILABILITY Filter */}
                 <div className="border-b border-gray-300 pb-4">
-                  <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide">
+                  <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide text-sm">
                     AVAILABILITY
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -265,7 +300,7 @@ export default function NewArrival() {
 
                 {/* PRICE Filter */}
                 <div className="border-b border-gray-300 pb-4">
-                  <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide">
+                  <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide text-sm">
                     PRICE
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -275,7 +310,7 @@ export default function NewArrival() {
 
                 {/* MORE FILTERS */}
                 <div className="border-b border-gray-300 pb-4">
-                  <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide">
+                  <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide text-sm">
                     MORE FILTERS
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -285,17 +320,64 @@ export default function NewArrival() {
               </div>
             </aside>
 
+            {/* Mobile Filters Drawer */}
+            {filtersOpen && (
+              <div className="lg:hidden fixed inset-0 z-50 bg-black/50" onClick={() => setFiltersOpen(false)}>
+                <div className="absolute left-0 top-0 bottom-0 w-64 bg-[#F5F5DC] p-6 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-gray-900 font-bold text-lg uppercase">Filters</h2>
+                    <button onClick={() => setFiltersOpen(false)} className="text-gray-900">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="space-y-6">
+                    {/* AVAILABILITY Filter */}
+                    <div className="border-b border-gray-300 pb-4">
+                      <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide text-sm">
+                        AVAILABILITY
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* PRICE Filter */}
+                    <div className="border-b border-gray-300 pb-4">
+                      <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide text-sm">
+                        PRICE
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* MORE FILTERS */}
+                    <div className="border-b border-gray-300 pb-4">
+                      <button className="w-full flex items-center justify-between text-gray-900 font-medium uppercase tracking-wide text-sm">
+                        MORE FILTERS
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Product Grid */}
-            <div className="flex-1">
-              <div className={`grid gap-6 ${
+            <div className="flex-1 w-full">
+              <div className={`grid gap-4 sm:gap-6 ${
                 gridView === '2x2' 
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
-                  : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
+                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' 
+                  : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4'
               }`}>
                 {products.map((product) => (
                   <div key={product.id} className="group">
                     {/* Product Image */}
-                    <div className="relative w-full aspect-[3/4] bg-gray-200 mb-3 overflow-hidden">
+                    <div className="relative w-full aspect-[3/4] bg-gray-200 mb-2 sm:mb-3 overflow-hidden">
                       <img 
                         src={product.image} 
                         alt={product.name}
@@ -304,17 +386,17 @@ export default function NewArrival() {
                     </div>
                     
                     {/* Product Name */}
-                    <h3 className={`${ptSerif.className} text-gray-900 font-semibold mb-2 text-sm uppercase tracking-wide`}>
+                    <h3 className={`${ptSerif.className} text-gray-900 font-semibold mb-1 sm:mb-2 text-xs sm:text-sm uppercase tracking-wide`}>
                       {product.name}
                     </h3>
                     
                     {/* Price */}
-                    <div className="flex items-center gap-2">
-                      <span className="text-blue-600 font-semibold text-sm">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                      <span className="text-blue-600 font-semibold text-xs sm:text-sm">
                         FROM PKR {product.price.toLocaleString()}.00
                       </span>
                       {product.originalPrice && (
-                        <span className="text-[#F5F5DC] line-through text-sm">
+                        <span className="text-[#F5F5DC] line-through text-xs sm:text-sm">
                           PKR {product.originalPrice.toLocaleString()}.00
                         </span>
                       )}
