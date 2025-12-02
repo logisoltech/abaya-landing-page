@@ -184,6 +184,28 @@ export default function NewArrival() {
           <source src="/new-arrival.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+
+        {/* Text Overlay */}
+        <div className="absolute inset-0 z-20 flex items-center justify-center">
+          <div className="text-center px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col items-center space-y-6 sm:space-y-8">
+              {/* Top Text */}
+              <div className={`${ptSerif.className} text-white text-base sm:text-lg md:text-xl lg:text-2xl font-light tracking-wider`}>
+                Navigating
+              </div>
+
+              {/* Center Main Text */}
+              <h1 className={`${ptSerif.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white`}>
+                New Arrival
+              </h1>
+
+              {/* Bottom Text */}
+              <div className={`${ptSerif.className} text-white text-base sm:text-lg md:text-xl lg:text-2xl font-light tracking-wider`}>
+                Section
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Product Listing Section */}
