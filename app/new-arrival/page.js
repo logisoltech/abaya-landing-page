@@ -10,6 +10,9 @@ export default function NewArrival() {
   const [sortOpen, setSortOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const sortRef = useRef(null);
 
   // Handle scroll to change navbar style
@@ -22,6 +25,33 @@ export default function NewArrival() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Fetch products from Shopify
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/products');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        
+        const data = await response.json();
+        setProducts(data.products || []);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError(err.message);
+        // Fallback to empty array on error
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProducts();
   }, []);
 
   // Close sort dropdown when clicking outside
@@ -40,52 +70,6 @@ export default function NewArrival() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [sortOpen]);
-
-  // Sample product data
-  const products = [
-    {
-      id: 1,
-      name: 'GARDEN ELEGANCE',
-      price: 1125,
-      originalPrice: 1500,
-      image: '/abaya-1.jpeg'
-    },
-    {
-      id: 2,
-      name: 'MIRA BLEND',
-      price: 1275,
-      originalPrice: 1700,
-      image: '/abaya-2.jpeg'
-    },
-    {
-      id: 3,
-      name: 'SHADOW STYLE',
-      price: 1275,
-      originalPrice: null,
-      image: '/abaya-3.jpeg'
-    },
-    {
-      id: 4,
-      name: 'CLASSIC ELEGANCE',
-      price: 1100,
-      originalPrice: 1400,
-      image: '/abaya-1.jpeg'
-    },
-    {
-      id: 5,
-      name: 'ROYAL BLEND',
-      price: 1350,
-      originalPrice: 1800,
-      image: '/abaya-3.jpeg'
-    },
-    {
-      id: 6,
-      name: 'MODERN STYLE',
-      price: 1200,
-      originalPrice: 1600,
-      image: '/abaya-2.jpeg'
-    }
-  ];
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -276,8 +260,8 @@ export default function NewArrival() {
               </div>
 
               {/* Center - Product Count */}
-              <div className="text-gray-900 font-medium">
-                6 PRODUCTS
+              <div className="text-gray-900 font-medium text-xs sm:text-sm">
+                {loading ? '...' : `${products.length} PRODUCT${products.length !== 1 ? 'S' : ''}`}
               </div>
 
               {/* Right - Sort By */}
@@ -391,41 +375,61 @@ export default function NewArrival() {
 
             {/* Product Grid */}
             <div className="flex-1 w-full">
-              <div className={`grid gap-4 sm:gap-6 ${
-                gridView === '2x2' 
-                  ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' 
-                  : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4'
-              }`}>
-                {products.map((product) => (
-                  <div key={product.id} className="group">
-                    {/* Product Image */}
-                    <div className="relative w-full aspect-[3/4] bg-gray-200 mb-2 sm:mb-3 overflow-hidden">
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
-                      />
-                    </div>
-                    
-                    {/* Product Name */}
-                    <h3 className={`${ptSerif.className} text-gray-900 font-semibold mb-1 sm:mb-2 text-xs sm:text-sm uppercase tracking-wide`}>
-                      {product.name}
-                    </h3>
-                    
-                    {/* Price */}
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                      <span className="text-blue-600 font-semibold text-xs sm:text-sm">
-                        FROM PKR {product.price.toLocaleString()}.00
-                      </span>
-                      {product.originalPrice && (
-                        <span className="text-[#F5F5DC] line-through text-xs sm:text-sm">
-                          PKR {product.originalPrice.toLocaleString()}.00
+              {loading ? (
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-gray-600">Loading products...</div>
+                </div>
+              ) : error ? (
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-red-600">Error: {error}</div>
+                </div>
+              ) : products.length === 0 ? (
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-gray-600">No products found</div>
+                </div>
+              ) : (
+                <div className={`grid gap-4 sm:gap-6 ${
+                  gridView === '2x2' 
+                    ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3' 
+                    : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4'
+                }`}>
+                  {products.map((product) => (
+                    <div key={product.id} className="group">
+                      {/* Product Image */}
+                      <div className="relative w-full aspect-[3/4] bg-gray-200 mb-2 sm:mb-3 overflow-hidden">
+                        {product.image ? (
+                          <img 
+                            src={product.image} 
+                            alt={product.imageAlt || product.name}
+                            className="w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-400">
+                            No Image
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Product Name */}
+                      <h3 className={`${ptSerif.className} text-gray-900 font-semibold mb-1 sm:mb-2 text-xs sm:text-sm uppercase tracking-wide`}>
+                        {product.name}
+                      </h3>
+                      
+                      {/* Price */}
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                        <span className="text-blue-600 font-semibold text-xs sm:text-sm">
+                          FROM PKR {Math.round(product.price).toLocaleString()}.00
                         </span>
-                      )}
+                        {product.originalPrice && (
+                          <span className="text-[#F5F5DC] line-through text-xs sm:text-sm">
+                            PKR {Math.round(product.originalPrice).toLocaleString()}.00
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
