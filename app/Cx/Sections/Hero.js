@@ -41,6 +41,12 @@ const Hero = () => {
   ];
 
   const currentVideo = videos[currentVideoIndex];
+  
+  // Determine link based on current video
+  const getVideoLink = (index) => {
+    // Video at index 1 is the summer collection video
+    return index === 1 ? '/summer-collection' : '/new-arrival';
+  };
 
   // Handle video change
   const changeVideo = (direction) => {
@@ -133,7 +139,7 @@ const Hero = () => {
       className="relative w-full h-screen flex items-center justify-center overflow-hidden"
     >
       {/* Video Backgrounds - Clickable Link */}
-      <Link href="/new-arrival" className="absolute inset-0 z-0 cursor-pointer">
+      <Link href={getVideoLink(currentVideoIndex)} className="absolute inset-0 z-0 cursor-pointer">
         {videos.map((video, index) => {
           const isCurrent = index === currentVideoIndex;
           const isNext = index === (currentVideoIndex + 1) % videos.length;
@@ -172,7 +178,7 @@ const Hero = () => {
       </Link>
 
       {/* Content Overlay - Clickable Link */}
-      <Link href="/new-arrival" className="relative z-10 text-center px-4 sm:px-6 lg:px-8 block cursor-pointer">
+      <Link href={getVideoLink(currentVideoIndex)} className="relative z-10 text-center px-4 sm:px-6 lg:px-8 block cursor-pointer">
         {/* Text Overlays */}
         <div className="flex flex-col items-center space-y-8">
           {/* Left Text */}

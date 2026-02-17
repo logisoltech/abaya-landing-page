@@ -10,55 +10,55 @@ import CartIcon from '../Cx/Components/CartIcon';
 const products = [
   {
     id: 1,
-    name: 'Classic Black Abaya',
+    name: 'Summer Breeze Abaya',
     price: 12500,
     originalPrice: 15000,
-    image: '/abaya-1.jpeg',
+    image: '/summer-1.webp',
     rating: 5,
     reviews: 24,
   },
   {
     id: 2,
-    name: 'Embroidered Silk Abaya',
+    name: 'Tropical Floral Abaya',
     price: 18900,
     originalPrice: null,
-    image: '/abaya-2.jpeg',
+    image: '/summer-2.webp',
     rating: 4,
     reviews: 17,
   },
   {
     id: 3,
-    name: 'Modern Open Abaya',
+    name: 'Lightweight Summer Abaya',
     price: 14500,
     originalPrice: 17000,
-    image: '/abaya-3.jpeg',
+    image: '/summer-3.webp',
     rating: 5,
     reviews: 31,
   },
   {
     id: 4,
-    name: 'Luxury Pearl Abaya',
+    name: 'Ocean Breeze Abaya',
     price: 22000,
     originalPrice: 25000,
-    image: '/abaya-1.jpeg',
+    image: '/summer-1.webp',
     rating: 4,
     reviews: 12,
   },
   {
     id: 5,
-    name: 'Floral Lace Abaya',
+    name: 'Sunset Elegance Abaya',
     price: 16800,
     originalPrice: null,
-    image: '/abaya-2.jpeg',
+    image: '/summer-2.webp',
     rating: 5,
     reviews: 28,
   },
   {
     id: 6,
-    name: 'Minimalist Everyday Abaya',
+    name: 'Beachside Classic Abaya',
     price: 9900,
     originalPrice: 12500,
-    image: '/abaya-3.jpeg',
+    image: '/summer-3.webp',
     rating: 4,
     reviews: 42,
   },
@@ -86,7 +86,7 @@ function StarRating({ rating, reviews }) {
   );
 }
 
-export default function NewArrival() {
+export default function SummerCollection() {
   const [gridView, setGridView] = useState('2x2');
   const [sortOpen, setSortOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -282,17 +282,17 @@ export default function NewArrival() {
             <div className="flex flex-col items-center space-y-6 sm:space-y-8">
               {/* Top Text */}
               <div className={`${ptSerif.className} text-white text-base sm:text-lg md:text-xl lg:text-2xl font-light tracking-wider`}>
-                Navigating
+                Discover
               </div>
 
               {/* Center Main Text */}
               <h1 className={`${ptSerif.className} text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white`}>
-                New Arrival
+                Summer Collection
               </h1>
 
               {/* Bottom Text */}
               <div className={`${ptSerif.className} text-white text-base sm:text-lg md:text-xl lg:text-2xl font-light tracking-wider`}>
-                Section
+                2025
               </div>
             </div>
           </div>
@@ -776,7 +776,7 @@ export default function NewArrival() {
                   {filteredAndSortedProducts.map((product) => (
                   <Link 
                     key={product.id} 
-                    href={`/product-inner?id=${product.id}&collection=new-arrival`}
+                    href={`/product-inner?id=${product.id}&collection=summer-collection`}
                     className="group cursor-pointer block"
                   >
                     {/* Product Image */}

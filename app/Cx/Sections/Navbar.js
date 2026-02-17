@@ -5,16 +5,23 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { ptSerif } from '../Font/font';
 import Link from 'next/link';
+import CartIcon from '../Components/CartIcon';
 
 export default function Navbar() {
-  const links = ['• New Arrivals', 'Shop Summer Collection', 'Shop Winter Collection', 'Shop All', 'About Us', 'Contact Us'];
+  const links = [
+    { text: '• New Arrivals', href: '/new-arrival' },
+    { text: 'Shop Summer Collection', href: '/summer-collection' },
+    { text: 'Shop Winter Collection', href: '/winter-collection' },
+    { text: 'About Us', href: '/about-us' },
+    { text: 'Contact Us', href: '/contact' }
+  ];
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     AOS.init({
       duration: 600,
       easing: 'ease-in-out',
-      once: true,
+      once: true,                                                       
       offset: 0,
     });
   }, []);
@@ -101,22 +108,7 @@ export default function Navbar() {
             </button>
 
             {/* Cart Icon */}
-            <button 
-              className="text-white hover:text-gray-300 transition-colors duration-200 p-2 relative"
-              aria-label="Cart"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </button>
+            <CartIcon isScrolled={false} />
           </div>
         </div>
       </nav>
@@ -133,13 +125,13 @@ export default function Navbar() {
             {links.map((link, index) => (
               <Link
                 key={index}
-                href={`/new-arrival`}
+                href={link.href}
                 onClick={() => setIsSidebarOpen(false)}
                 data-aos="fade-right"
                 data-aos-delay={index * 80}
                 className="group relative text-white/90 hover:text-white transition-all duration-300 font-medium text-base uppercase tracking-wider py-4"
               >
-                <span className="relative z-10">{link}</span>
+                <span className="relative z-10">{link.text}</span>
                 <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-white transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
@@ -162,12 +154,12 @@ export default function Navbar() {
             {links.map((link, index) => (
               <Link
                 key={index}
-                href={`/new-arrival`}
+                href={link.href}
                 data-aos="fade-up"
                 data-aos-delay={index * 50}
                 className="text-white hover:text-gray-300 transition-colors duration-300 whitespace-nowrap font-medium text-sm uppercase tracking-wide"
               >
-                {link}
+                {link.text}
               </Link>
             ))}
           </div>

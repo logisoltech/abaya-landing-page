@@ -86,10 +86,10 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a 
-                  href="mailto:info@selectedlines.ae" 
+                  href="mailto:info@abayawebsite.com" 
                   className="text-black underline hover:no-underline text-sm"
                 >
-                  Email: info@selectedlines.ae
+                  Email: info@abayawebsite.com
                 </a>
               </li>
               <li>
