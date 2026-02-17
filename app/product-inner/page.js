@@ -2,7 +2,7 @@
 
 import { ptSerif } from '../Cx/Font/font';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Footer from '../Cx/Sections/Footer';
@@ -275,7 +275,7 @@ function StarRating({ rating, reviews }) {
   );
 }
 
-export default function ProductInner() {
+function ProductInnerContent() {
   const searchParams = useSearchParams();
   const [selectedSize, setSelectedSize] = useState('');
   const [selectedColor, setSelectedColor] = useState('');
@@ -522,5 +522,20 @@ export default function ProductInner() {
       {/* Footer */}
       <Footer />
     </div>
+  );
+}
+
+export default function ProductInner() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#F5F5DC] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading product...</p>
+        </div>
+      </div>
+    }>
+      <ProductInnerContent />
+    </Suspense>
   );
 }
